@@ -1,6 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 
+
 # Show title and description.
 st.title("MY Document Question Answering")
 st.write(
@@ -35,7 +36,11 @@ else:
             ),
             index=0
         )
-        # Ask the user for a question via `st.text_area`.
+        # Checkbox to select between basic and advanced model
+        use_advanced_model = st.sidebar.checkbox("Use Advanced Model (gpt-4o)")
+
+        # Model selection based on checkbox
+        model_choice = "gpt-4o" if use_advanced_model else "gpt-4o-mini"
 
         if uploaded_file and summary_option:
             # Process the uploaded file and question.
@@ -63,7 +68,7 @@ else:
 
             # Generate an answer using the OpenAI API.
             stream = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=model_choice,
                 messages=messages,
                 stream=True,
             )
